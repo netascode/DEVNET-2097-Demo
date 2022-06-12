@@ -1,0 +1,31 @@
+---
+apic:
+  tenants:
+    - name: CL
+
+      vrfs:
+        - name: CL
+
+      bridge_domains:
+        - name: WEB
+          vrf: CL
+          subnets:
+            - ip: 10.1.1.1/24
+        - name: APP
+          vrf: CL
+          subnets:
+            - ip: 10.1.2.1/24
+        - name: DB
+          vrf: CL
+          subnets:
+            - ip: 10.1.3.1/24
+
+      application_profiles:
+        - name: DEV
+          endpoint_groups:
+            - name: WEB
+              bridge_domain: WEB
+            - name: APP
+              bridge_domain: APP
+            - name: DB
+              bridge_domain: DB
