@@ -33,7 +33,7 @@ apic:
             - name: APP
               bridge_domain: APP
             - name: DB
-              bridge_domain: DB
+              bridge_domain: DB2
         - name: NET_CENTRIC
           endpoint_groups:
             - name: VLAN100
