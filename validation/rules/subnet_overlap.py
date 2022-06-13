@@ -22,7 +22,7 @@ class Rule:
                                     ipaddress.ip_network(subnet["ip"], strict=False)
                                 )
 
-                    # check subnet overlap with ever other subnet
+                    # check subnet overlap with every other subnet
                     for idx, subnet in enumerate(subnets):
                         if idx + 1 >= len(subnets):
                             break
