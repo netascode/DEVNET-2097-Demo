@@ -29,3 +29,4 @@ apic:
               bridge_domain: APP
             - name: DB
               bridge_domain: DB
+              preferred_group: true
