@@ -19,6 +19,10 @@ apic:
           vrf: CL
           subnets:
             - ip: 10.1.3.1/24
+        - name: VLAN100
+          vrf: CL
+          subnets:
+            - ip: 10.1.100.1/24
 
       application_profiles:
         - name: DEV
@@ -29,4 +33,8 @@ apic:
               bridge_domain: APP
             - name: DB
               bridge_domain: DB
+        - name: NET_CENTRIC
+          endpoint_groups:
+            - name: VLAN100
+              bridge_domain: VLAN100
               preferred_group: true
