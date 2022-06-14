@@ -5,7 +5,6 @@ apic:
 
       vrfs:
         - name: CL
-          preferred_group: true
 
       bridge_domains:
         - name: WEB
