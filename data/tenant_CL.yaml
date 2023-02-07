@@ -5,6 +5,7 @@ apic:
 
       vrfs:
         - name: CL
+          preferred_group: true
 
       bridge_domains:
         - name: WEB
@@ -19,6 +20,8 @@ apic:
           vrf: CL
           subnets:
             - ip: 10.1.3.1/24
+        - name: VLAN101
+          vrf: CL
 
       application_profiles:
         - name: DEV
@@ -29,3 +32,8 @@ apic:
               bridge_domain: APP
             - name: DB
               bridge_domain: DB
+        - name: NET_CENTRIC
+          endpoint_groups:
+            - name: VLAN101
+              bridge_domain: VLAN101
+              preferred_group: true
