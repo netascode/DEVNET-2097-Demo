@@ -1,7 +1,7 @@
 ---
 apic:
   tenants:
-    - name: CL
+    - name: DEVNET-2097
 
       vrfs:
         - name: CL

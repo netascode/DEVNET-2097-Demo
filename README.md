@@ -1,4 +1,4 @@
-# Cisco Live US 2022 DEVNET-2097 Demo
+# Cisco Live Amsterdam 2023 DEVNET-2097 Demo
 
 ## Setup
 
@@ -44,7 +44,7 @@ terraform init
 ## Pre-Change Validation
 
 ```shell
-iac-validate --schema ./validation/apic_schema.yaml --rules ./validation/rules/ ./data/ ./defaults/
+iac-validate ./data/
 ```
 
 ## Terraform Plan/Apply
@@ -56,5 +56,5 @@ terraform apply
 ## Testing
 
 ```shell
-iac-test --data ./data --data ./defaults --templates ./tests/templates --output ./tests/results/aci
+iac-test --data ./data --data ./defaults.yaml --templates ./tests/templates --output ./tests/results/aci
 ```

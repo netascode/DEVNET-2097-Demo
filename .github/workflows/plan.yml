@@ -17,10 +17,32 @@ jobs:
       - name: Terraform Setup
         uses: hashicorp/setup-terraform@v2
 
+      - name: Restore Terraform Cache
+        uses: actions/cache/restore@v3
+        with:
+          path: |
+            .terraform
+            .terraform.lock.hcl
+          key: terraform
+
       - name: Terraform Init
         env:
           TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_app_terraform_io }}
         run: terraform init -input=false
+
+      - name: Save Terraform Cache
+        uses: actions/cache/save@v3
+        with:
+          path: |
+            .terraform
+            .terraform.lock.hcl
+          key: terraform
+
+      - name: Restore Defaults Cache
+        uses: actions/cache/restore@v3
+        with:
+          path: defaults.yaml
+          key: defaults
 
       - name: Terraform Plan
         id: plan
@@ -29,7 +51,6 @@ jobs:
           ACI_URL: ${{ secrets.ACI_URL }}
           ACI_USERNAME: ${{ secrets.ACI_USERNAME }}
           ACI_PASSWORD: ${{ secrets.ACI_PASSWORD }}
-          ACI_RETRIES: 4
         run: terraform plan -input=false -no-color
 
       - name: Add Pull Request Comment

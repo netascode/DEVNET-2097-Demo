@@ -2,35 +2,40 @@ terraform {
   required_providers {
     aci = {
       source  = "CiscoDevNet/aci"
-      version = ">= 2.1.0"
+      version = ">= 2.6.1"
     }
-    utils = {
-      source  = "netascode/utils"
-      version = ">= 0.1.1"
+    local = {
+      source  = "hashicorp/local"
+      version = ">= 2.3.0"
     }
   }
 
   cloud {
-    organization = "CLUS22"
+    organization = "CLAMS23"
 
     workspaces {
-      name = "DEVNET-2097-DEMO"
+      name = "DEVNET-2097-Demo"
     }
   }
 }
 
-locals {
-  model = yamldecode(data.utils_yaml_merge.model.output)
-}
+module "merge" {
+  source  = "netascode/nac-merge/utils"
+  version = "0.1.2"
 
-data "utils_yaml_merge" "model" {
-  input = concat([for file in fileset(path.module, "data/*.yaml") : file(file)], [file("${path.module}/defaults/defaults.yaml")])
+  yaml_strings = [for file in fileset(path.module, "data/*.yaml") : file(file)]
 }
 
 module "tenant" {
-  source = "./modules/terraform-aci-tenant"
+  source  = "netascode/nac-tenant/aci"
+  version = "0.4.2"
 
-  for_each    = toset([for tenant in lookup(local.model.apic, "tenants", {}) : tenant.name])
-  model       = local.model
-  tenant_name = each.value
+  for_each    = { for tenant in try(module.merge.model.apic.tenants, []) : tenant.name => tenant }
+  model       = module.merge.model
+  tenant_name = each.value.name
+}
+
+resource "local_sensitive_file" "defaults" {
+  content  = yamlencode(module.merge.defaults)
+  filename = "${path.module}/defaults.yaml"
 }

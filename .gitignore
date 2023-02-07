@@ -407,3 +407,6 @@ tests/results/
 
 # Pabot
 .pabotsuitenames
+
+# defaults.yaml
+defaults.yaml

@@ -17,7 +17,7 @@ jobs:
       - name: Python Setup
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: '3.11'
           cache: 'pip'
 
       - name: Python Tools Setup
@@ -26,10 +26,32 @@ jobs:
       - name: Terraform Setup
         uses: hashicorp/setup-terraform@v2
 
+      - name: Restore Terraform Cache
+        uses: actions/cache/restore@v3
+        with:
+          path: |
+            .terraform
+            .terraform.lock.hcl
+          key: terraform
+
       - name: Terraform Init
         env:
           TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_app_terraform_io }}
         run: terraform init -input=false
+
+      - name: Save Terraform Cache
+        uses: actions/cache/save@v3
+        with:
+          path: |
+            .terraform
+            .terraform.lock.hcl
+          key: terraform
+
+      - name: Restore Defaults Cache
+        uses: actions/cache/restore@v3
+        with:
+          path: defaults.yaml
+          key: defaults
 
       - name: Terraform Apply
         env:
@@ -37,8 +59,13 @@ jobs:
           ACI_URL: ${{ secrets.ACI_URL }}
           ACI_USERNAME: ${{ secrets.ACI_USERNAME }}
           ACI_PASSWORD: ${{ secrets.ACI_PASSWORD }}
-          ACI_RETRIES: 4
         run: terraform apply -input=false -auto-approve
+
+      - name: Save Defaults Cache
+        uses: actions/cache/save@v3
+        with:
+          path: defaults.yaml
+          key: defaults
 
       - name: Test Idempotency
         env:
@@ -46,7 +73,6 @@ jobs:
           ACI_URL: ${{ secrets.ACI_URL }}
           ACI_USERNAME: ${{ secrets.ACI_USERNAME }}
           ACI_PASSWORD: ${{ secrets.ACI_PASSWORD }}
-          ACI_RETRIES: 4
         run: terraform plan -input=false -detailed-exitcode
 
       - name: Test Health
@@ -56,7 +82,7 @@ jobs:
           ACI_PASSWORD: ${{ secrets.ACI_PASSWORD }}
         run: |
           set -o pipefail
-          iac-test --data ./data --data ./defaults --templates ./tests/templates --output ./tests/results/aci |& tee test_output.txt
+          iac-test --data ./data --data ./defaults.yaml --templates ./tests/templates --output ./tests/results/aci |& tee test_output.txt
           \cp tests/results/aci/log.html /tmp
 
       - name: Webex Notifcation

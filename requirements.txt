@@ -1,2 +1,2 @@
-iac-validate==0.1.2
-iac-test==0.1.0
+iac-validate==0.2.2
+iac-test==0.2.2
