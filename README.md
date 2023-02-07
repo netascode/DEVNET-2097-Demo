@@ -24,7 +24,7 @@ Update the `cloud` block within the `terraform` configuration in `main.tf` to po
 ```terraform
 terraform {
   cloud {
-    organization = "CLUS22"
+    organization = "CLAMS23"
 
     workspaces {
       name = "DEVNET-2097-DEMO"
