@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
+      - run: "docker run -t -v /home/hhoteit/DEVNET-2097-Demo:/home/hhoteit/DEVNET-2097-Demo"
       - name: Checkout
         uses: actions/checkout@v3
 
