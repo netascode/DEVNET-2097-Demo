@@ -27,7 +27,7 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Restore Terraform Cache
-        uses: actions/cache/restore@v3
+        uses: actions/cache/restore@v4
         with:
           path: |
             .terraform
@@ -40,7 +40,7 @@ jobs:
         run: terraform init -input=false
 
       - name: Save Terraform Cache
-        uses: actions/cache/save@v3
+        uses: actions/cache/save@v4
         with:
           path: |
             .terraform
@@ -48,7 +48,7 @@ jobs:
           key: terraform
 
       - name: Restore Defaults Cache
-        uses: actions/cache/restore@v3
+        uses: actions/cache/restore@v4
         with:
           path: defaults.yaml
           key: defaults
@@ -62,7 +62,7 @@ jobs:
         run: terraform apply -input=false -auto-approve
 
       - name: Save Defaults Cache
-        uses: actions/cache/save@v3
+        uses: actions/cache/save@v4
         with:
           path: defaults.yaml
           key: defaults
