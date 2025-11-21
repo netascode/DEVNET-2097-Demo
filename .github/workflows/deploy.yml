@@ -12,7 +12,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Python Setup
         uses: actions/setup-python@v5
@@ -108,7 +108,7 @@ jobs:
             ${URL}
 
       - name: Checkout Github Pages
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: gh-pages
 
